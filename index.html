@@ -1,0 +1,2541 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop - Online Shopping</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: #050b18;
+            color: #f8fafc;
+            min-height: 100vh;
+            padding: 120px 20px 0;
+            overflow-x: hidden;
+            position: relative;
+            background-image:
+                    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+            background-size: 45px 45px;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            width: 700px;
+            height: 700px;
+            top: -300px;
+            left: -250px;
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.30), rgba(56, 189, 248, 0.08) 35%, transparent 70%);
+            filter: blur(30px);
+            animation: glowOne 10s ease-in-out infinite alternate;
+            pointer-events: none;
+            z-index: -2;
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            width: 650px;
+            height: 650px;
+            right: -250px;
+            bottom: -250px;
+            background: radial-gradient(circle, rgba(129, 140, 248, 0.30), rgba(192, 132, 252, 0.10) 35%, transparent 70%);
+            filter: blur(35px);
+            animation: glowTwo 12s ease-in-out infinite alternate;
+            pointer-events: none;
+            z-index: -2;
+        }
+
+        @keyframes glowOne {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(180px, 120px) scale(1.2); }
+            100% { transform: translate(80px, 300px) scale(0.9); }
+        }
+
+        @keyframes glowTwo {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-150px, -100px) scale(1.2); }
+            100% { transform: translate(-50px, -250px) scale(0.9); }
+        }
+
+        /* NAVBAR */
+        .navbar {
+            position: fixed;
+            top: 18px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 40px);
+            max-width: 1200px;
+            height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 22px;
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(22px);
+            -webkit-backdrop-filter: blur(22px);
+            border: 1px solid rgba(255, 255, 255, 0.10);
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            z-index: 1000;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            font-size: 23px;
+            font-weight: 800;
+            color: #f8fafc;
+            text-decoration: none;
+        }
+
+        .nav-logo i {
+            color: #38bdf8;
+            font-size: 25px;
+        }
+
+        .logo-dot {
+            color: #38bdf8;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-links a {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            padding: 10px 13px;
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            border-radius: 10px;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #f8fafc;
+            background: rgba(56, 189, 248, 0.10);
+            transform: translateY(-1px);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .nav-icon-btn {
+            width: 40px;
+            height: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            background: rgba(15, 23, 42, 0.7);
+            color: #cbd5e1;
+            cursor: pointer;
+            position: relative;
+            transition: 0.3s;
+        }
+
+        .nav-icon-btn:hover {
+            color: #38bdf8;
+            border-color: rgba(56, 189, 248, 0.4);
+            background: rgba(56, 189, 248, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            min-width: 18px;
+            height: 18px;
+            padding: 0 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #38bdf8, #818cf8);
+            color: white;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 800;
+            border: 2px solid #0f172a;
+        }
+
+        .profile-btn {
+            height: 40px;
+            padding: 0 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            border-radius: 12px;
+            background: rgba(56, 189, 248, 0.08);
+            color: #e2e8f0;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .profile-btn i {
+            color: #38bdf8;
+        }
+
+        .profile-btn:hover {
+            background: rgba(56, 189, 248, 0.18);
+            border-color: rgba(56, 189, 248, 0.5);
+        }
+
+        .profile-btn.logged-in {
+            background: rgba(74, 222, 128, 0.12);
+            border-color: rgba(74, 222, 128, 0.4);
+        }
+
+        .profile-btn.logged-in i {
+            color: #4ade80;
+        }
+
+        .menu-btn {
+            display: none;
+            width: 40px;
+            height: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            background: rgba(15, 23, 42, 0.7);
+            color: white;
+            cursor: pointer;
+        }
+
+        /* MAIN CONTAINER */
+        .container {
+            position: relative;
+            width: 100%;
+            max-width: 640px;
+            margin: auto;
+            background: rgba(30, 41, 59, 0.65);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.6), 0 0 40px rgba(56, 189, 248, 0.08);
+            padding: 32px;
+            animation: containerAppear 0.8s ease, floatContainer 6s ease-in-out infinite alternate;
+        }
+
+        @keyframes containerAppear {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.96);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes floatContainer {
+            from { transform: translateY(0); }
+            to { transform: translateY(-5px); }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #38bdf8, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header p {
+            color: #94a3b8;
+            font-size: 13px;
+            margin-top: 6px;
+        }
+
+        .search-box {
+            display: flex;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 14px 45px 14px 16px;
+            background: rgba(15, 23, 42, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.10);
+            border-radius: 14px;
+            color: white;
+            outline: none;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .search-box input:focus {
+            border-color: #38bdf8;
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+        }
+
+        .search-box i {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #38bdf8;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #cbd5e1;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .grid-brands {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .brand-btn {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 14px 8px;
+            color: #f8fafc;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            transition: 0.35s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .brand-btn:hover {
+            background: rgba(56, 189, 248, 0.12);
+            border-color: rgba(56, 189, 248, 0.5);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(56, 189, 248, 0.2);
+        }
+
+        .brand-btn.active {
+            background: linear-gradient(135deg, #38bdf8, #0284c7);
+            color: #0f172a;
+            border-color: #38bdf8;
+            box-shadow: 0 8px 25px rgba(56, 189, 248, 0.45);
+        }
+
+        .brand-btn i {
+            font-size: 24px;
+            color: #38bdf8;
+        }
+
+        .brand-btn.active i {
+            color: #0f172a;
+        }
+
+        .brand-icon {
+            width: 26px;
+            height: 26px;
+            object-fit: contain;
+        }
+
+        .custom-select {
+            display: none;
+            margin-bottom: 24px;
+            animation: fadeInDown 0.4s ease;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .select-wrapper {
+            position: relative;
+        }
+
+        select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 14px;
+            background: #0f172a;
+            color: white;
+            outline: none;
+            cursor: pointer;
+            font-size: 15px;
+            appearance: none;
+        }
+
+        select:focus {
+            border-color: #38bdf8;
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.20);
+        }
+
+        .select-arrow {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #38bdf8;
+            pointer-events: none;
+        }
+
+        /* PRODUCT CARD */
+        .product-card {
+            background: rgba(15, 23, 42, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 28px;
+            text-align: center;
+            display: none;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            animation: cardReveal 0.5s ease;
+        }
+
+        @keyframes cardReveal {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .product-card img {
+            width: 100%;
+            max-width: 210px;
+            height: 200px;
+            object-fit: contain;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.6));
+            animation: productFloat 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes productFloat {
+            from { transform: translateY(0); }
+            to { transform: translateY(-8px); }
+        }
+
+        .product-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .price-tag {
+            display: inline-block;
+            background: rgba(74, 222, 128, 0.12);
+            color: #4ade80;
+            border: 1px solid rgba(74, 222, 128, 0.4);
+            padding: 8px 22px;
+            border-radius: 30px;
+            font-weight: 800;
+            font-size: 17px;
+            margin-bottom: 18px;
+        }
+
+        .specs-section {
+            text-align: left;
+            margin: 20px 0 24px;
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 18px;
+            max-height: 320px;
+            overflow-y: auto;
+        }
+
+        .specs-section::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .specs-section::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+        }
+
+        .specs-section::-webkit-scrollbar-thumb {
+            background: rgba(56, 189, 248, 0.4);
+            border-radius: 3px;
+        }
+
+        .specs-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #38bdf8;
+            margin-bottom: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .spec-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            gap: 12px;
+        }
+
+        .spec-row:last-child {
+            border-bottom: none;
+        }
+
+        .spec-label {
+            font-size: 12px;
+            color: #94a3b8;
+            font-weight: 500;
+            flex-shrink: 0;
+            min-width: 110px;
+        }
+
+        .spec-value {
+            font-size: 12px;
+            color: #e2e8f0;
+            font-weight: 600;
+            text-align: right;
+        }
+
+        .add-cart-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 13px;
+            background: linear-gradient(135deg, #38bdf8, #6366f1);
+            color: white;
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 9px;
+            transition: 0.3s;
+            box-shadow: 0 8px 20px rgba(56, 189, 248, 0.2);
+        }
+
+        .add-cart-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(56, 189, 248, 0.35);
+        }
+
+        .add-cart-btn:active {
+            transform: scale(0.97);
+        }
+
+        /* CART PANEL */
+        .cart-panel {
+            position: fixed;
+            top: 0;
+            right: -420px;
+            width: 400px;
+            max-width: 90%;
+            height: 100vh;
+            background: rgba(15, 23, 42, 0.97);
+            backdrop-filter: blur(25px);
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 2000;
+            padding: 25px;
+            transition: right 0.4s ease;
+            box-shadow: -20px 0 50px rgba(0, 0, 0, 0.4);
+        }
+
+        .cart-panel.open {
+            right: 0;
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .cart-header h2 {
+            font-size: 20px;
+        }
+
+        .close-cart {
+            width: 36px;
+            height: 36px;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.06);
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .cart-items {
+            margin-top: 20px;
+            max-height: calc(100vh - 220px);
+            overflow-y: auto;
+        }
+
+        .empty-cart {
+            text-align: center;
+            color: #64748b;
+            padding: 60px 10px;
+        }
+
+        .empty-cart i {
+            font-size: 45px;
+            margin-bottom: 15px;
+            color: #334155;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            margin-bottom: 10px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 13px;
+        }
+
+        .cart-item img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 10px;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-info h4 {
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+
+        .cart-item-info p {
+            color: #4ade80;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .remove-item {
+            width: 30px;
+            height: 30px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(239, 68, 68, 0.1);
+            color: #f87171;
+            cursor: pointer;
+        }
+
+        .cart-footer {
+            position: absolute;
+            left: 25px;
+            right: 25px;
+            bottom: 25px;
+            padding-top: 18px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #4ade80, #16a34a);
+            color: white;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        /* ===================== ACCOUNT MODAL ===================== */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(5, 11, 24, 0.75);
+            backdrop-filter: blur(8px);
+            z-index: 3000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .account-modal {
+            width: 100%;
+            max-width: 420px;
+            background: rgba(30, 41, 59, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+            animation: modalSlide 0.4s ease;
+            position: relative;
+        }
+
+        @keyframes modalSlide {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .account-modal h2 {
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 6px;
+            background: linear-gradient(135deg, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+        }
+
+        .account-modal .subtitle {
+            text-align: center;
+            color: #94a3b8;
+            font-size: 13px;
+            margin-bottom: 24px;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 36px;
+            height: 36px;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.06);
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        .close-modal:hover {
+            background: rgba(239, 68, 68, 0.2);
+            color: #f87171;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: #94a3b8;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 13px 16px;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.10);
+            border-radius: 12px;
+            color: white;
+            font-size: 14px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: #38bdf8;
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+        }
+
+        .form-group input::placeholder {
+            color: #64748b;
+        }
+
+        .submit-account-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 13px;
+            background: linear-gradient(135deg, #38bdf8, #6366f1);
+            color: white;
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            margin-top: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            transition: 0.3s;
+        }
+
+        .submit-account-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(56, 189, 248, 0.3);
+        }
+
+        .account-info {
+            display: none;
+        }
+
+        .account-info.show {
+            display: block;
+        }
+
+        .account-info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            font-size: 13px;
+        }
+
+        .account-info-row:last-child {
+            border-bottom: none;
+        }
+
+        .account-info-label {
+            color: #94a3b8;
+        }
+
+        .account-info-value {
+            color: #e2e8f0;
+            font-weight: 600;
+        }
+
+        .logout-btn {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 12px;
+            background: rgba(239, 68, 68, 0.1);
+            color: #f87171;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: rgba(239, 68, 68, 0.2);
+        }
+
+        .success-message {
+            text-align: center;
+            padding: 20px;
+            display: none;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        .success-message i {
+            font-size: 48px;
+            color: #4ade80;
+            margin-bottom: 12px;
+        }
+
+        .success-message h3 {
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .success-message p {
+            color: #94a3b8;
+            font-size: 13px;
+        }
+
+        /* ===================== CAMPAIGNS ===================== */
+        .campaigns-section {
+            max-width: 1200px;
+            margin: 60px auto 40px;
+            padding: 0 20px;
+        }
+
+        .campaigns-header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .campaigns-header h2 {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #38bdf8, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+
+        .campaigns-header p {
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+        .countdown-box {
+            display: flex;
+            justify-content: center;
+            gap: 14px;
+            margin: 25px 0 40px;
+            flex-wrap: wrap;
+        }
+
+        .countdown-item {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            border-radius: 16px;
+            padding: 14px 18px;
+            min-width: 80px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(56, 189, 248, 0.15);
+        }
+
+        .countdown-item .number {
+            font-size: 28px;
+            font-weight: 800;
+            color: #38bdf8;
+            display: block;
+        }
+
+        .countdown-item .label {
+            font-size: 11px;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 4px;
+        }
+
+        .campaign-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 22px;
+        }
+
+        .campaign-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 22px;
+            padding: 24px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: 0.35s;
+        }
+
+        .campaign-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(56, 189, 248, 0.4);
+            box-shadow: 0 15px 35px rgba(56, 189, 248, 0.2);
+        }
+
+        .discount-badge {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: linear-gradient(135deg, #f43f5e, #e11d48);
+            color: white;
+            font-size: 13px;
+            font-weight: 800;
+            padding: 6px 12px;
+            border-radius: 30px;
+            box-shadow: 0 4px 15px rgba(244, 63, 94, 0.4);
+        }
+
+        .campaign-card img {
+            width: 100%;
+            max-width: 180px;
+            height: 170px;
+            object-fit: contain;
+            margin: 10px 0 18px;
+            filter: drop-shadow(0 12px 20px rgba(0,0,0,0.5));
+        }
+
+        .campaign-card h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .price-box {
+            margin-bottom: 18px;
+        }
+
+        .old-price {
+            color: #64748b;
+            text-decoration: line-through;
+            font-size: 14px;
+            margin-right: 8px;
+        }
+
+        .new-price {
+            color: #4ade80;
+            font-size: 22px;
+            font-weight: 800;
+        }
+
+        .campaign-btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #38bdf8, #6366f1);
+            color: white;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .campaign-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(56, 189, 248, 0.35);
+        }
+
+        /* MOBILE */
+        @media (max-width: 850px) {
+            .nav-links {
+                display: none;
+            }
+            .menu-btn {
+                display: block;
+            }
+            .profile-btn span {
+                display: none;
+            }
+            .profile-btn {
+                width: 40px;
+                justify-content: center;
+                padding: 0;
+            }
+        }
+
+        @media (max-width: 550px) {
+            body {
+                padding: 90px 10px 0;
+            }
+            .navbar {
+                width: calc(100% - 20px);
+                top: 10px;
+                height: 64px;
+                padding: 0 14px;
+                border-radius: 17px;
+            }
+            .nav-logo {
+                font-size: 19px;
+            }
+            .nav-actions {
+                gap: 5px;
+            }
+            .nav-icon-btn,
+            .profile-btn,
+            .menu-btn {
+                width: 36px;
+                height: 36px;
+            }
+            .container {
+                padding: 22px;
+                border-radius: 20px;
+            }
+            .grid-brands {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .cart-panel {
+                width: 100%;
+                max-width: 100%;
+            }
+            .spec-label {
+                min-width: 90px;
+            }
+            .account-modal {
+                padding: 24px;
+            }
+            .countdown-item {
+                min-width: 65px;
+                padding: 12px 10px;
+            }
+            .countdown-item .number {
+                font-size: 22px;
+            }
+        }
+
+        /* ===================== FOOTER ===================== */
+        .shop-footer {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            color: #94a3b8;
+            padding: 55px 6% 20px;
+            margin-top: 60px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        .footer-container {
+            max-width: 1250px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: 1.5fr 1.3fr 0.7fr;
+            gap: 45px;
+            padding-bottom: 40px;
+        }
+        .footer-logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            font-size: 28px;
+            font-weight: 800;
+            color: #f8fafc;
+        }
+        .logo-my {
+            color: #38bdf8;
+        }
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #38bdf8, #6366f1);
+            color: white;
+            font-size: 22px;
+        }
+        .brand-description {
+            max-width: 320px;
+            line-height: 1.8;
+            color: #64748b;
+            margin: 18px 0;
+            font-size: 14px;
+        }
+        .app-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .app-button {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 15px;
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: white;
+            border-radius: 12px;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+        }
+        .app-button i {
+            font-size: 28px;
+            color: #38bdf8;
+        }
+        .app-button span {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .app-button small {
+            font-size: 9px;
+            color: #94a3b8;
+        }
+        .app-button strong {
+            font-size: 14px;
+            color: #f8fafc;
+        }
+        .app-button:hover {
+            transform: translateY(-3px);
+            border-color: rgba(56, 189, 248, 0.5);
+            box-shadow: 0 8px 20px rgba(56, 189, 248, 0.2);
+        }
+        .footer-container h3 {
+            color: #e2e8f0;
+            margin: 8px 0 20px;
+            font-size: 18px;
+            font-weight: 700;
+        }
+        .footer-about p {
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.8;
+            margin-bottom: 14px;
+        }
+        .footer-about strong {
+            color: #cbd5e1;
+        }
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .footer-links a {
+            color: #64748b;
+            text-decoration: none;
+            margin-bottom: 14px;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+        .footer-links a:hover {
+            color: #38bdf8;
+        }
+        .footer-bottom {
+            max-width: 1250px;
+            margin: auto;
+            padding-top: 22px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+        .footer-bottom p {
+            color: #64748b;
+            font-size: 13px;
+        }
+        .social-links {
+            display: flex;
+            gap: 12px;
+        }
+        .social-links a {
+            width: 44px;
+            height: 44px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #94a3b8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            text-decoration: none;
+            font-size: 18px;
+            transition: all 0.25s;
+        }
+        .social-links a:hover {
+            background: linear-gradient(135deg, #38bdf8, #6366f1);
+            color: white;
+            border-color: transparent;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(56, 189, 248, 0.3);
+        }
+        @media (max-width: 900px) {
+            .footer-container {
+                grid-template-columns: 1fr 1fr;
+                gap: 35px;
+            }
+        }
+        @media (max-width: 600px) {
+            .shop-footer {
+                padding: 35px 22px 20px;
+            }
+            .footer-container {
+                grid-template-columns: 1fr;
+                gap: 28px;
+            }
+            .footer-logo {
+                font-size: 24px;
+            }
+            .app-buttons {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .footer-bottom {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .social-links {
+                gap: 10px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+    <a href="#" class="nav-logo">
+        <i class="fa-solid fa-bag-shopping"></i>
+        <span>Shop<span class="logo-dot">.</span></span>
+    </a>
+
+    <div class="nav-links">
+        <a href="#"><i class="fa-solid fa-house"></i> Home</a>
+        <a href="#products"><i class="fa-solid fa-box"></i> Products</a>
+        <a href="#campaigns"><i class="fa-solid fa-tags"></i> Campaigns</a>
+        <a href="#about-us"><i class="fa-solid fa-circle-info"></i> About Us</a>
+    </div>
+
+    <div class="nav-actions">
+        <button class="nav-icon-btn" onclick="focusSearch()">
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+        <button class="nav-icon-btn" onclick="openCart()">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span class="cart-count" id="cartCount">0</span>
+        </button>
+        <button class="profile-btn" id="profileBtn" onclick="openAccountModal()">
+            <i class="fa-solid fa-user"></i>
+            <span id="profileText">Account</span>
+        </button>
+        <button class="menu-btn" onclick="toggleMenu()">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </div>
+</nav>
+
+<!-- MAIN -->
+<div class="container" id="products">
+    <div class="header">
+        <h1>MyShops</h1>
+    </div>
+
+    <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Search for products..." oninput="searchProducts()">
+        <i class="fa-solid fa-magnifying-glass"></i>
+    </div>
+
+    <label class="form-label">Select the brand</label>
+
+    <div class="grid-brands">
+        <button class="brand-btn" onclick="selectBrand('Samsung', this)">
+            <i class="fa-solid fa-mobile-screen-button"></i>
+            Samsung
+        </button>
+        <button class="brand-btn" onclick="selectBrand('Apple', this)">
+            <i class="fa-brands fa-apple"></i>
+            Apple
+        </button>
+        <button class="brand-btn" onclick="selectBrand('Xiaomi', this)">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Xiaomi_logo_%282021-%29.svg" class="brand-icon">
+            Xiaomi
+        </button>
+        <button class="brand-btn" onclick="selectBrand('Tecno', this)">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsCbV8Wm9wi8eGwSixrjomXMxim3gOc56m5fzOfwp57eEL4iI7aWFKvLM&s=10" class="brand-icon">
+            Tecno
+        </button>
+        <button class="brand-btn" onclick="selectBrand('Asus', this)">
+            <i class="fa-solid fa-laptop"></i>
+            Asus
+        </button>
+        <button class="brand-btn" onclick="selectBrand('Acer', this)">
+            <i class="fa-solid fa-laptop"></i>
+            Acer
+        </button>
+    </div>
+
+    <div class="custom-select" id="modelGroup">
+        <label class="form-label" for="modelSelect">Select the model</label>
+        <div class="select-wrapper">
+            <select id="modelSelect" onchange="handleModelChange()">
+                <option value="">-- Select the model --</option>
+            </select>
+            <i class="fa-solid fa-chevron-down select-arrow"></i>
+        </div>
+    </div>
+
+    <div class="product-card" id="productCard">
+        <div id="productContent"></div>
+    </div>
+</div>
+
+<!-- ===================== CAMPAIGNS ===================== -->
+<section class="campaigns-section" id="campaigns">
+    <div class="campaigns-header">
+        <h2><i class="fa-solid fa-fire"></i> Kampaniyalar</h2>
+        <p>Məhdud müddətli endirimlər — tələsin!</p>
+    </div>
+
+    <!-- Countdown -->
+    <div class="countdown-box">
+        <div class="countdown-item">
+            <span class="number" id="days">00</span>
+            <span class="label">Gün</span>
+        </div>
+        <div class="countdown-item">
+            <span class="number" id="hours">00</span>
+            <span class="label">Saat</span>
+        </div>
+        <div class="countdown-item">
+            <span class="number" id="minutes">00</span>
+            <span class="label">Dəqiqə</span>
+        </div>
+        <div class="countdown-item">
+            <span class="number" id="seconds">00</span>
+            <span class="label">Saniyə</span>
+        </div>
+    </div>
+
+    <!-- Endirimli məhsullar -->
+    <div class="campaign-grid">
+
+        <!-- 1 -->
+        <div class="campaign-card">
+            <div class="discount-badge">-13%</div>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmWOXM72saEBiORR6jjRUASwBjFTgnBfeCoCksJ6YQONsQRkGIqFyale8&s=10" alt="S25">
+            <h3>Samsung Galaxy S25</h3>
+            <div class="price-box">
+                <span class="old-price">2400 AZN</span>
+                <span class="new-price">2099 AZN</span>
+            </div>
+            <button class="campaign-btn" onclick="addCampaignToCart(101, 'Samsung Galaxy S25', 2099, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmWOXM72saEBiORR6jjRUASwBjFTgnBfeCoCksJ6YQONsQRkGIqFyale8&s=10')">
+                <i class="fa-solid fa-cart-plus"></i> Səbətə at
+            </button>
+        </div>
+
+        <!-- 2 -->
+        <div class="campaign-card">
+            <div class="discount-badge">-11%</div>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmS2-lpJ6e_A1N7IWBTaBHc__z_x7_PYyKQr7ZIFIrJJCZba95XA2-PpnT&s=10" alt="iPhone 16 Pro">
+            <h3>iPhone 16 Pro</h3>
+            <div class="price-box">
+                <span class="old-price">1900 AZN</span>
+                <span class="new-price">1699 AZN</span>
+            </div>
+            <button class="campaign-btn" onclick="addCampaignToCart(205, 'iPhone 16 Pro', 1699, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmS2-lpJ6e_A1N7IWBTaBHc__z_x7_PYyKQr7ZIFIrJJCZba95XA2-PpnT&s=10')">
+                <i class="fa-solid fa-cart-plus"></i> Səbətə at
+            </button>
+        </div>
+
+        <!-- 3 -->
+        <div class="campaign-card">
+            <div class="discount-badge">-17%</div>
+            <img src="https://strgimgr.b-cdn.net/sized/840/747656-e2ab5193b2faf404bd517c26d7617854.jpg?width=384&height=384&quality=90" alt="Xiaomi 14">
+            <h3>Xiaomi 14</h3>
+            <div class="price-box">
+                <span class="old-price">1200 AZN</span>
+                <span class="new-price">999 AZN</span>
+            </div>
+            <button class="campaign-btn" onclick="addCampaignToCart(304, 'Xiaomi 14', 999, 'https://strgimgr.b-cdn.net/sized/840/747656-e2ab5193b2faf404bd517c26d7617854.jpg?width=384&height=384&quality=90')">
+                <i class="fa-solid fa-cart-plus"></i> Səbətə at
+            </button>
+        </div>
+
+        <!-- 4 -->
+        <div class="campaign-card">
+            <div class="discount-badge">-9%</div>
+            <img src="https://strgimgr.umico.az/img/product/1680/06c74e93-e5ad-4a28-82fe-21542539aa69.jpeg" alt="TUF F16">
+            <h3>Asus TUF Gaming F16</h3>
+            <div class="price-box">
+                <span class="old-price">3500 AZN</span>
+                <span class="new-price">3199 AZN</span>
+            </div>
+            <button class="campaign-btn" onclick="addCampaignToCart(503, 'Asus TUF Gaming F16', 3199, 'https://strgimgr.umico.az/img/product/1680/06c74e93-e5ad-4a28-82fe-21542539aa69.jpeg')">
+                <i class="fa-solid fa-cart-plus"></i> Səbətə at
+            </button>
+        </div>
+
+    </div>
+</section>
+
+<!-- CART -->
+<div class="cart-panel" id="cartPanel">
+    <div class="cart-header">
+        <h2><i class="fa-solid fa-cart-shopping"></i> Shopping Cart</h2>
+        <button class="close-cart" onclick="closeCart()">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+    <div class="cart-items" id="cartItems">
+        <div class="empty-cart">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <p>Your cart is empty.</p>
+        </div>
+    </div>
+    <div class="cart-footer">
+        <div class="cart-total">
+            <span>Total:</span>
+            <span id="cartTotal">0 AZN</span>
+        </div>
+        <button class="checkout-btn" onclick="checkout()">Place the order</button>
+    </div>
+</div>
+
+<!-- ===================== ACCOUNT MODAL ===================== -->
+<div class="modal-overlay" id="accountModal">
+    <div class="account-modal">
+        <button class="close-modal" onclick="closeAccountModal()">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <!-- Registration Form -->
+        <div id="registerForm">
+            <h2><i class="fa-solid fa-user-plus"></i> Create Account</h2>
+            <p class="subtitle">Enter your information</p>
+
+            <div class="form-group">
+                <label>Name</label>
+                <input type="text" id="accName" placeholder="Enter your name" required>
+            </div>
+            <div class="form-group">
+                <label>Surname</label>
+                <input type="text" id="accSurname" placeholder="Enter your surname" required>
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="accEmail" placeholder="email@example.com" required>
+            </div>
+            <div class="form-group">
+                <label>Phone Number</label>
+                <input type="tel" id="accPhone" placeholder="+994 XX XXX XX XX" required>
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="accPassword" placeholder="Enter your password" required>
+            </div>
+
+            <button class="submit-account-btn" onclick="createAccount()">
+                <i class="fa-solid fa-check"></i>
+                Create Account
+            </button>
+        </div>
+
+        <!-- Success Message -->
+        <div class="success-message" id="successMsg">
+            <i class="fa-solid fa-circle-check"></i>
+            <h3>Account created successfully!</h3>
+            <p>You can now start shopping.</p>
+        </div>
+
+        <!-- Account Info View -->
+        <div class="account-info" id="accountInfo">
+            <h2><i class="fa-solid fa-user"></i> My Account</h2>
+            <p class="subtitle">Your personal information</p>
+
+            <div class="account-info-row">
+                <span class="account-info-label">Name</span>
+                <span class="account-info-value" id="infoName">-</span>
+            </div>
+            <div class="account-info-row">
+                <span class="account-info-label">Surname</span>
+                <span class="account-info-value" id="infoSurname">-</span>
+            </div>
+            <div class="account-info-row">
+                <span class="account-info-label">Email</span>
+                <span class="account-info-value" id="infoEmail">-</span>
+            </div>
+            <div class="account-info-row">
+                <span class="account-info-label">Phone</span>
+                <span class="account-info-value" id="infoPhone">-</span>
+            </div>
+
+            <button class="logout-btn" onclick="logout()">
+                <i class="fa-solid fa-right-from-bracket"></i> Logout
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    /* =========================================
+       PRODUCTS - Detailed specs from Java code
+    ========================================= */
+    const products = {
+        Samsung: [
+            {
+                id: 101,
+                name: "Samsung Galaxy S25",
+                price: 2400,
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmWOXM72saEBiORR6jjRUASwBjFTgnBfeCoCksJ6YQONsQRkGIqFyale8&s=10",
+                specs: {
+                    "Display": "6.2-inch Dynamic AMOLED 2X",
+                    "Resolution": "2340 x 1080 pixels",
+                    "Processor": "Snapdragon 8 Elite for Galaxy",
+                    "RAM": "12GB",
+                    "Storage": "128GB / 256GB / 512GB",
+                    "Main Camera": "50MP",
+                    "Ultra-Wide Camera": "12MP",
+                    "Telephoto Camera": "10MP",
+                    "Front Camera": "12MP",
+                    "Battery": "4000mAh",
+                    "Operating System": "Android 15",
+                    "Water Resistance": "IP68",
+                    "Network": "5G"
+                }
+            },
+            {
+                id: 102,
+                name: "Samsung Galaxy A55",
+                price: 899,
+                image: "https://kontakt.az/media/catalog/product/cache/fbd42596869cc4deb59edfc1ed742a64/t/m/tm-dg-sbp-1105-sm-2747_1.png",
+                specs: {
+                    "Display": "6.6-inch Super AMOLED",
+                    "Resolution": "2340 x 1080 pixels",
+                    "Processor": "Exynos 1480",
+                    "RAM": "8GB",
+                    "Storage": "128GB / 256GB",
+                    "Main Camera": "50MP",
+                    "Ultra-Wide Camera": "12MP",
+                    "Macro Camera": "5MP",
+                    "Front Camera": "32MP",
+                    "Battery": "5000mAh",
+                    "Operating System": "Android 14",
+                    "Water Resistance": "IP67",
+                    "Network": "5G"
+                }
+            },
+            {
+                id: 103,
+                name: "Samsung Galaxy A17",
+                price: 489,
+                image: "https://storage.irshad.az/products/resized/Qe7NIZGaEY4KkeqDm15v9MCzfMzEzTcxcQywC0Bg.png",
+                specs: {
+                    "Display": "6.7-inch Super AMOLED",
+                    "Resolution": "2340 x 1080 pixels",
+                    "Processor": "Octa-Core, up to 2.2GHz",
+                    "RAM": "6GB",
+                    "Storage": "128GB",
+                    "Main Camera": "50MP",
+                    "Ultra-Wide Camera": "5MP",
+                    "Macro Camera": "2MP",
+                    "Front Camera": "13MP",
+                    "Battery": "5000mAh",
+                    "Operating System": "Android",
+                    "Water Resistance": "IP54",
+                    "Network": "4G"
+                }
+            },
+            {
+                id: 104,
+                name: "Samsung Galaxy S22",
+                price: 780,
+                image: "https://kontakt.az/media/catalog/product/cache/fbd42596869cc4deb59edfc1ed742a64/t/m/tm-dg-sbp-1105-sm-1676.png",
+                specs: {
+                    "Display": "6.1-inch Dynamic AMOLED 2X",
+                    "Resolution": "2340 x 1080 pixels",
+                    "Processor": "Snapdragon 8 Gen 1 / Exynos 2200",
+                    "RAM": "8GB",
+                    "Storage": "128GB / 256GB",
+                    "Main Camera": "50MP",
+                    "Ultra-Wide Camera": "12MP",
+                    "Telephoto Camera": "10MP",
+                    "Front Camera": "10MP",
+                    "Battery": "3700mAh",
+                    "Operating System": "Android 12",
+                    "Water Resistance": "IP68",
+                    "Network": "5G"
+                }
+            }
+        ],
+        Apple: [
+            {
+                id: 201,
+                name: "iPhone 17 Pro",
+                price: 3800,
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZcJgUVgTAOayjngzAcDImQO0FFKfMYHSGQlSSVs6rEA&s=10",
+                specs: {
+                    "Display": "6.3-inch Super Retina XDR OLED",
+                    "Resolution": "2622 x 1206 pixels",
+                    "Processor": "Apple A19 Pro",
+                    "RAM": "12GB",
+                    "Storage": "256GB / 512GB / 1TB",
+                    "Main Camera": "48MP",
+                    "Ultra-Wide Camera": "48MP",
+                    "Telephoto Camera": "48MP",
+                    "Front Camera": "18MP",
+                    "Battery": "Built-in rechargeable lithium-ion",
+                    "Operating System": "iOS 26",
+                    "Water Resistance": "IP68",
+                    "Network": "5G"
+                }
+            },
+            {
+                id: 202,
+                name: "iPhone 14 Pro Max",
+                price: 1800,
+                image: "https://media.ldlc.com/r1600/ld/products/00/05/97/76/LD0005977695_0005977720_0005977750.jpg",
+                specs: {
+                    "Display": "6.7-inch Super Retina XDR OLED",
+                    "Resolution": "2796 x 1290 pixels",
+                    "Processor": "Apple A16 Bionic",
+                    "RAM": "6GB",
+                    "Storage": "128GB / 256GB / 512GB / 1TB",
+                    "Main Camera": "48MP",
+                    "Ultra-Wide Camera": "12MP",
+                    "Telephoto Camera": "12MP",
+                    "Front Camera": "12MP",
+                    "Battery": "Built-in rechargeable lithium-ion",
+                    "Operating System": "iOS",
+                    "Water Resistance": "IP68",
+                    "Network": "5G"
+                }
+            },
+            {
+                id: 203,
+                name: "iPhone 13",
+                price: 1100,
+                image: "https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/refurb-iphone-13-blue-2023?wid=2000&hei=1897&fmt=jpeg&qlt=95",
+                specs: {
+                    "Display": "6.1-inch Super Retina XDR OLED",
+                    "Resolution": "2532 x 1170 pixels",
+                    "Processor": "Apple A15 Bionic",
+                    "RAM": "4GB",
+                    "Storage": "128GB / 256GB / 512GB",
+                    "Main Camera": "12MP",
+                    "Ultra-Wide Camera": "12MP",
+                    "Front Camera": "12MP",
+                    "Battery": "Built-in rechargeable lithium-ion",
+                    "Operating System": "iOS",
+                    "Water Resistance": "IP68",
+                    "Network": "5G"
+                }
+            },
+            {
+                id: 204,
+                name: "iPhone 15",
+                price: 1200,
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJz-7XIww-sqQ2U99mck_VKpVSI998hHhFJdZV_cHwaA&s=10",
+                specs: {
+                    "Display": "6.1-inch Super Retina XDR OLED",
+                    "Resolution": "2556 x 1179 pixels",
+                    "Processor": "Apple A16 Bionic",
+                    "RAM": "6GB",
+                    "Storage": "128GB / 256GB / 512GB",
+                    "Main Camera": "48MP",
+                    "Ultra-Wide Camera": "12MP",
+                    "Front Camera": "12MP",
+                    "Battery": "Built-in rechargeable lithium-ion",
+                    "Operating System": "iOS",
+                    "Water Resistance": "IP68",
+                    "Network": "5G"
+                }
+            },
+            {
+                id: 205,
+                name: "iPhone 16 Pro",
+                price: 1900,
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmS2-lpJ6e_A1N7IWBTaBHc__z_x7_PYyKQr7ZIFIrJJCZba95XA2-PpnT&s=10",
+                specs: {
+                    "Display": "6.3-inch Super Retina XDR OLED",
+                    "Resolution": "2622 x 1206 pixels",
+                    "Processor": "Apple A18 Pro",
+                    "RAM": "8GB",
+                    "Storage": "128GB / 256GB / 512GB / 1TB",
+                    "Main Camera": "48MP",
+                    "Ultra-Wide Camera": "48MP",
+                    "Telephoto Camera": "12MP",
+                    "Front Camera": "12MP",
+                    "Battery": "Built-in rechargeable lithium-ion",
+                    "Operating System": "iOS",
+                    "Water Resistance": "IP68",
+                    "Network": "5G"
+                }
+            }
+        ],
+        Xiaomi: [
+            {
+                id: 301,
+                name: "Xiaomi 12S Ultra",
+                price: 650,
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTccPQlY_-zUy6BqhkndYvvTkplqlh5v4kmuITfyZQWbQ&s=10",
+                specs: {
+                    "Display": "6.73-inch AMOLED",
+                    "Resolution": "3200 x 1440 pixels",
+                    "Processor": "Snapdragon 8+ Gen 1",
+                    "RAM": "8GB / 12GB",
+                    "Storage": "256GB / 512GB",
+                    "Main Camera": "50MP 1-inch Sony IMX989",
+                    "Ultra-Wide Camera": "48MP",
+                    "Telephoto Camera": "48MP",
+                    "Front Camera": "32MP",
+                    "Battery": "4860mAh",
+                    "Charging": "67W wired / 50W wireless",
+                    "Operating System": "Android",
+                    "Water Resistance": "IP68",
+                    "Network": "5G"
+                }
+            },
+            {
+                id: 302,
+                name: "Xiaomi 13 T",
+                price: 900,
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQphwMH7r8yVcXKU3tv2YfZz-LbaKb4V16hkhMtyOCKOy6rQYjyvZfT3MXb&s=10",
+                specs: {
+                    "Display": "6.67-inch AMOLED",
+                    "Resolution": "2712 x 1220 pixels",
+                    "Refresh Rate": "144Hz",
+                    "Processor": "MediaTek Dimensity 8200-Ultra",
+                    "RAM": "8GB / 12GB",
+                    "Storage": "256GB",
+                    "Main Camera": "50MP Leica",
+                    "Telephoto Camera": "50MP Leica",
+                    "Ultra-Wide Camera": "12MP Leica",
+                    "Front Camera": "20MP",
+                    "Battery": "5000mAh",
+                    "Charging": "67W",
+                    "Operating System": "Android",
+                    "Water Resistance": "IP68",
+                    "Network": "5G"
+                }
+            },
+            {
+                id: 303,
+                name: "Xiaomi 17 Pro",
+                price: 1900,
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzZpBNutCMzMtWlK8Ch2IiJh67IZs4Ee7E2w6j3XzOkA&s=10",
+                specs: {
+                    "Display": "6.3-inch LTPO AMOLED",
+                    "Processor": "Snapdragon 8 Elite",
+                    "RAM": "12GB / 16GB",
+                    "Storage": "256GB / 512GB / 1TB",
+                    "Main Camera": "50MP",
+                    "Ultra-Wide Camera": "50MP",
+                    "Telephoto Camera": "50MP",
+                    "Front Camera": "50MP",
+                    "Battery": "6300mAh",
+                    "Charging": "100W wired / 50W wireless",
+                    "Operating System": "Android",
+                    "Water Resistance": "IP68",
+                    "Network": "5G"
+                }
+            },
+            {
+                id: 304,
+                name: "Xiaomi 14",
+                price: 1200,
+                image: "https://strgimgr.b-cdn.net/sized/840/747656-e2ab5193b2faf404bd517c26d7617854.jpg?width=384&height=384&quality=90",
+                specs: {
+                    "Display": "6.36-inch LTPO AMOLED",
+                    "Resolution": "2670 x 1200 pixels",
+                    "Refresh Rate": "1-120Hz",
+                    "Processor": "Snapdragon 8 Gen 3",
+                    "RAM": "12GB",
+                    "Storage": "512GB",
+                    "Main Camera": "50MP Leica",
+                    "Telephoto Camera": "50MP Leica",
+                    "Ultra-Wide Camera": "50MP Leica",
+                    "Front Camera": "32MP",
+                    "Battery": "4610mAh",
+                    "Charging": "90W wired / 50W wireless",
+                    "Operating System": "Android",
+                    "Water Resistance": "IP68",
+                    "Network": "5G"
+                }
+            }
+        ],
+        Tecno: [
+            {
+                id: 401,
+                name: "Tecno Spark 20 Pro",
+                price: 900,
+                image: "https://assets.smartelectronics.az/Assets/cdn-cgi?path=f769c646-54ec-4fee-b0b7-0156a9fbd88b.webp",
+                specs: {
+                    "Display": "6.78-inch FHD+ IPS LCD",
+                    "Resolution": "1080 x 2460 pixels",
+                    "Refresh Rate": "120Hz",
+                    "Processor": "MediaTek Helio G99",
+                    "RAM": "8GB",
+                    "Storage": "256GB",
+                    "Main Camera": "108MP",
+                    "Macro Camera": "2MP",
+                    "Front Camera": "32MP",
+                    "Battery": "5000mAh",
+                    "Charging": "33W",
+                    "Operating System": "Android 13",
+                    "Network": "4G"
+                }
+            },
+            {
+                id: 402,
+                name: "Tecno Camon 30 Pro",
+                price: 680,
+                image: "https://img5.lalafo.com/i/posters/api/6d/a2/f9/736d2f4ffde4654b84c02285f9.jpeg",
+                specs: {
+                    "Display": "6.78-inch AMOLED",
+                    "Resolution": "1080 x 2436 pixels",
+                    "Refresh Rate": "144Hz",
+                    "Processor": "MediaTek Dimensity 8200 Ultimate",
+                    "RAM": "12GB",
+                    "Storage": "512GB",
+                    "Main Camera": "50MP OIS",
+                    "Ultra-Wide Camera": "50MP",
+                    "Depth Camera": "2MP",
+                    "Front Camera": "50MP AF",
+                    "Battery": "5000mAh",
+                    "Charging": "70W",
+                    "Operating System": "Android 14",
+                    "Network": "5G"
+                }
+            },
+            {
+                id: 403,
+                name: "Tecno Spark Go 1",
+                price: 359,
+                image: "https://assets.smartelectronics.az/Assets/cdn-cgi?path=5b796503-9ee9-42e6-86fc-f6b203cae2ea.webp",
+                specs: {
+                    "Display": "6.67-inch",
+                    "Resolution": "720 x 1600 pixels",
+                    "Refresh Rate": "120Hz",
+                    "Processor": "Unisoc T615",
+                    "RAM": "3GB / 4GB",
+                    "Storage": "64GB / 128GB",
+                    "Main Camera": "13MP",
+                    "Front Camera": "8MP",
+                    "Battery": "5000mAh",
+                    "Charging": "15W",
+                    "Operating System": "Android 14 Go",
+                    "Network": "4G / 4.5G"
+                }
+            }
+        ],
+        Asus: [
+            {
+                id: 501,
+                name: "Asus Vivobook M15",
+                price: 1300,
+                image: "https://dlcdnwebimgs.asus.com/gain/8eccd024-11c9-439d-9cf1-944acb2bca07/",
+                specs: {
+                    "Display": "15.6-inch Full HD",
+                    "Resolution": "1920 x 1080 pixels",
+                    "Processor": "AMD Ryzen 7 4700U",
+                    "RAM": "8GB / 16GB DDR4",
+                    "Storage": "512GB / 1TB SSD",
+                    "Graphics": "AMD Radeon Graphics",
+                    "Camera": "720p HD",
+                    "Operating System": "Windows",
+                    "Wi-Fi": "Wi-Fi 5 / Wi-Fi 6"
+                }
+            },
+            {
+                id: 502,
+                name: "Asus Vivobook S15 OLED",
+                price: 1500,
+                image: "https://aztechshop.az/image/cache/catalog/ASUS%20Ultrabuklar/ASUS%20Vivobook%20S15%20OLED%20S5506M%20Neutral%20Black%20(4)sayt%20-1000x832.png",
+                specs: {
+                    "Display": "15.6-inch 3K OLED",
+                    "Resolution": "2880 x 1620 pixels",
+                    "Refresh Rate": "120Hz",
+                    "Processor": "AMD Ryzen 7 8845HS",
+                    "RAM": "32GB LPDDR5X",
+                    "Storage": "512GB PCIe 4.0 SSD",
+                    "Graphics": "AMD Radeon Graphics",
+                    "Operating System": "Windows 11",
+                    "Wi-Fi": "Wi-Fi 6E",
+                    "Display Color": "100% DCI-P3"
+                }
+            },
+            {
+                id: 503,
+                name: "Asus TUF Gaming F16",
+                price: 3500,
+                image: "https://strgimgr.umico.az/img/product/1680/06c74e93-e5ad-4a28-82fe-21542539aa69.jpeg",
+                specs: {
+                    "Display": "16-inch 2.5K IPS-level",
+                    "Resolution": "2560 x 1600 pixels",
+                    "Refresh Rate": "165Hz",
+                    "Processor": "Intel Core i7-14650HX",
+                    "RAM": "16GB DDR5",
+                    "Storage": "1TB PCIe NVMe SSD",
+                    "Graphics": "NVIDIA GeForce RTX 5070 Laptop GPU",
+                    "Graphics Memory": "8GB GDDR7",
+                    "Operating System": "Windows 11",
+                    "MUX Switch": "Yes",
+                    "Network": "Wi-Fi 6"
+                }
+            },
+            {
+                id: 504,
+                name: "Asus Vivobook 16X",
+                price: 2200,
+                image: "https://dlcdnwebimgs.asus.com/gain/4ce76534-f712-49ea-a6a1-a25609248a71/w800",
+                specs: {
+                    "Display": "16-inch OLED",
+                    "Resolution": "3200 x 2000 pixels",
+                    "Refresh Rate": "120Hz",
+                    "Processor": "Intel Core i9-13900H",
+                    "RAM": "16GB DDR4",
+                    "Storage": "1TB PCIe NVMe SSD",
+                    "Graphics": "NVIDIA GeForce RTX 3050",
+                    "Graphics Memory": "4GB GDDR6",
+                    "Operating System": "Windows 11",
+                    "Color Gamut": "100% DCI-P3"
+                }
+            }
+        ],
+        Acer: [
+            {
+                id: 601,
+                name: "Acer TravelMate P6 14",
+                price: 1100,
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTP4KMCB8lEdyefFyZl9ZwVICmXdY7rB22e3td-VWAOR6pGVeoav1HpbvJt&s=10",
+                specs: {
+                    "Display": "14-inch",
+                    "Resolution": "2880 x 1800 pixels",
+                    "Processor": "Intel Core Ultra 7",
+                    "RAM": "Up to 32GB LPDDR5X",
+                    "Storage": "Up to 1TB PCIe Gen4 SSD",
+                    "Graphics": "Intel Arc Graphics",
+                    "Camera": "1440p QHD",
+                    "Operating System": "Windows 11",
+                    "Battery": "65Wh",
+                    "Wi-Fi": "Wi-Fi 7"
+                }
+            },
+            {
+                id: 602,
+                name: "Acer Nitro V15",
+                price: 1800,
+                image: "https://storage.irshad.az/products/resized/PnJTKARtpurPrUz3r9df8g78OBWyyxzAJm2plXaE.webp",
+                specs: {
+                    "Display": "15.6-inch IPS",
+                    "Resolution": "1920 x 1080 pixels",
+                    "Refresh Rate": "165Hz",
+                    "Processor": "Intel Core 5 210H",
+                    "RAM": "16GB DDR5",
+                    "Storage": "512GB PCIe 4.0 SSD",
+                    "Graphics": "NVIDIA GeForce RTX 4050",
+                    "Graphics Memory": "6GB GDDR6",
+                    "Operating System": "Windows 11",
+                    "Wi-Fi": "Wi-Fi 6"
+                }
+            },
+            {
+                id: 603,
+                name: "Acer Aspire Go 15",
+                price: 1299,
+                image: "https://soliton.az/images/articles/2026/01/21/20260121040933340_3.jpg",
+                specs: {
+                    "Display": "15.6-inch Full HD",
+                    "Resolution": "1920 x 1080 pixels",
+                    "Processor": "Intel Core i5",
+                    "RAM": "16GB",
+                    "Storage": "512GB SSD",
+                    "Graphics": "Intel Integrated Graphics",
+                    "Camera": "Full HD",
+                    "Operating System": "Windows 11",
+                    "Wi-Fi": "Wi-Fi 6",
+                    "Bluetooth": "Bluetooth 5.2"
+                }
+            }
+        ]
+    };
+
+    let selectedBrand = "";
+    let selectedProduct = null;
+    let cart = [];
+    let currentUser = null;
+
+    // Load account + start countdown
+    window.addEventListener("DOMContentLoaded", () => {
+        const saved = localStorage.getItem("shopAccount");
+        if (saved) {
+            currentUser = JSON.parse(saved);
+            updateProfileUI();
+        }
+        startCountdown();
+    });
+
+    /* ===================== COUNTDOWN ===================== */
+    function startCountdown() {
+        // Kampaniya bitmə tarixi (istədiyin kimi dəyiş)
+        const endDate = new Date("2026-10-20T23:59:59").getTime();
+
+        const timer = setInterval(() => {
+            const now = new Date().getTime();
+            const distance = endDate - now;
+
+            if (distance < 0) {
+                clearInterval(timer);
+                document.getElementById("days").textContent = "00";
+                document.getElementById("hours").textContent = "00";
+                document.getElementById("minutes").textContent = "00";
+                document.getElementById("seconds").textContent = "00";
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("days").textContent = days < 10 ? "0" + days : days;
+            document.getElementById("hours").textContent = hours < 10 ? "0" + hours : hours;
+            document.getElementById("minutes").textContent = minutes < 10 ? "0" + minutes : minutes;
+            document.getElementById("seconds").textContent = seconds < 10 ? "0" + seconds : seconds;
+        }, 1000);
+    }
+
+    /* ===================== KAMPANİYA SƏBƏTƏ ATMA ===================== */
+    function addCampaignToCart(id, name, price, image) {
+        cart.push({ id, name, price, image });
+        updateCart();
+
+        const btn = event.target.closest("button");
+        const original = btn.innerHTML;
+        btn.innerHTML = `<i class="fa-solid fa-check"></i> Əlavə olundu`;
+        btn.style.background = "linear-gradient(135deg,#4ade80,#16a34a)";
+
+        setTimeout(() => {
+            btn.innerHTML = original;
+            btn.style.background = "linear-gradient(135deg,#38bdf8,#6366f1)";
+        }, 1200);
+    }
+
+    /* ===================== ACCOUNT FUNCTIONS ===================== */
+    function openAccountModal() {
+        const modal = document.getElementById("accountModal");
+        const registerForm = document.getElementById("registerForm");
+        const accountInfo = document.getElementById("accountInfo");
+        const successMsg = document.getElementById("successMsg");
+
+        successMsg.classList.remove("show");
+
+        if (currentUser) {
+            registerForm.style.display = "none";
+            accountInfo.classList.add("show");
+
+            document.getElementById("infoName").textContent = currentUser.name;
+            document.getElementById("infoSurname").textContent = currentUser.surname;
+            document.getElementById("infoEmail").textContent = currentUser.email;
+            document.getElementById("infoPhone").textContent = currentUser.phone;
+        } else {
+            registerForm.style.display = "block";
+            accountInfo.classList.remove("show");
+        }
+
+        modal.classList.add("open");
+    }
+
+    function closeAccountModal() {
+        document.getElementById("accountModal").classList.remove("open");
+    }
+
+    function createAccount() {
+        const name = document.getElementById("accName").value.trim();
+        const surname = document.getElementById("accSurname").value.trim();
+        const email = document.getElementById("accEmail").value.trim();
+        const phone = document.getElementById("accPhone").value.trim();
+        const password = document.getElementById("accPassword").value.trim();
+
+        if (!name || !surname || !email || !phone || !password) {
+            alert("Please fill in all fields!");
+            return;
+        }
+
+        if (!email.includes("@") || !email.includes(".")) {
+            alert("Please enter a valid email!");
+            return;
+        }
+
+        currentUser = { name, surname, email, phone, password };
+        localStorage.setItem("shopAccount", JSON.stringify(currentUser));
+
+        document.getElementById("registerForm").style.display = "none";
+        document.getElementById("successMsg").classList.add("show");
+
+        updateProfileUI();
+
+        setTimeout(() => {
+            document.getElementById("successMsg").classList.remove("show");
+            document.getElementById("accountInfo").classList.add("show");
+
+            document.getElementById("infoName").textContent = name;
+            document.getElementById("infoSurname").textContent = surname;
+            document.getElementById("infoEmail").textContent = email;
+            document.getElementById("infoPhone").textContent = phone;
+        }, 1500);
+    }
+
+    function updateProfileUI() {
+        const btn = document.getElementById("profileBtn");
+        const text = document.getElementById("profileText");
+
+        if (currentUser) {
+            btn.classList.add("logged-in");
+            text.textContent = currentUser.name;
+        } else {
+            btn.classList.remove("logged-in");
+            text.textContent = "Account";
+        }
+    }
+
+    function logout() {
+        currentUser = null;
+        localStorage.removeItem("shopAccount");
+        updateProfileUI();
+        closeAccountModal();
+
+        document.getElementById("accName").value = "";
+        document.getElementById("accSurname").value = "";
+        document.getElementById("accEmail").value = "";
+        document.getElementById("accPhone").value = "";
+        document.getElementById("accPassword").value = "";
+    }
+
+    /* ===================== PRODUCT FUNCTIONS ===================== */
+    function selectBrand(brand, btn) {
+        selectedBrand = brand;
+        document.querySelectorAll(".brand-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+
+        const modelGroup = document.getElementById("modelGroup");
+        const modelSelect = document.getElementById("modelSelect");
+        const productCard = document.getElementById("productCard");
+
+        modelSelect.innerHTML = `<option value="">-- Select the model --</option>`;
+        modelGroup.style.display = "block";
+        productCard.style.display = "none";
+
+        products[brand].forEach(item => {
+            const option = document.createElement("option");
+            option.value = item.id;
+            option.textContent = item.name;
+            modelSelect.appendChild(option);
+        });
+
+        modelGroup.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+
+    function handleModelChange() {
+        const modelId = parseInt(document.getElementById("modelSelect").value);
+        const productCard = document.getElementById("productCard");
+        const productContent = document.getElementById("productContent");
+
+        if (!modelId) {
+            productCard.style.display = "none";
+            return;
+        }
+
+        const selected = products[selectedBrand].find(p => p.id === modelId);
+
+        if (selected) {
+            selectedProduct = selected;
+            productCard.style.display = "block";
+
+            let specsHTML = "";
+            if (selected.specs) {
+                for (const [key, value] of Object.entries(selected.specs)) {
+                    specsHTML += `
+                        <div class="spec-row">
+                            <span class="spec-label">${key}</span>
+                            <span class="spec-value">${value}</span>
+                        </div>
+                    `;
+                }
+            }
+
+            productContent.innerHTML = `
+                <img src="${selected.image}" alt="${selected.name}">
+                <div class="product-title">${selected.name}</div>
+                <div class="price-tag">${selected.price} AZN</div>
+                <div class="specs-section">
+                    <div class="specs-title">
+                        <i class="fa-solid fa-microchip"></i>
+                        Technical Specifications
+                    </div>
+                    ${specsHTML}
+                </div>
+                <button class="add-cart-btn" onclick="addToCart()">
+                    <i class="fa-solid fa-cart-plus"></i>
+                    Add to Cart
+                </button>
+            `;
+        }
+    }
+
+    function addToCart() {
+        if (!selectedProduct) return;
+        cart.push(selectedProduct);
+        updateCart();
+
+        const button = document.querySelector(".add-cart-btn");
+        if (button) {
+            button.innerHTML = `<i class="fa-solid fa-check"></i> Added`;
+            button.style.background = "linear-gradient(135deg,#4ade80,#16a34a)";
+            setTimeout(() => {
+                button.innerHTML = `<i class="fa-solid fa-cart-plus"></i> Add to Cart`;
+                button.style.background = "linear-gradient(135deg,#38bdf8,#6366f1)";
+            }, 1000);
+        }
+    }
+
+    function updateCart() {
+        const cartCount = document.getElementById("cartCount");
+        const cartItems = document.getElementById("cartItems");
+        const cartTotal = document.getElementById("cartTotal");
+
+        cartCount.textContent = cart.length;
+
+        if (cart.length === 0) {
+            cartItems.innerHTML = `
+                <div class="empty-cart">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <p>Your cart is empty.</p>
+                </div>
+            `;
+            cartTotal.textContent = "0 AZN";
+            return;
+        }
+
+        cartItems.innerHTML = "";
+        let total = 0;
+
+        cart.forEach((item, index) => {
+            total += item.price;
+            const div = document.createElement("div");
+            div.className = "cart-item";
+            div.innerHTML = `
+                <img src="${item.image}" alt="${item.name}">
+                <div class="cart-item-info">
+                    <h4>${item.name}</h4>
+                    <p>${item.price} AZN</p>
+                </div>
+                <button class="remove-item" onclick="removeFromCart(${index})">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
+            `;
+            cartItems.appendChild(div);
+        });
+
+        cartTotal.textContent = total + " AZN";
+    }
+
+    function removeFromCart(index) {
+        cart.splice(index, 1);
+        updateCart();
+    }
+
+    function openCart() {
+        document.getElementById("cartPanel").classList.add("open");
+    }
+
+    function closeCart() {
+        document.getElementById("cartPanel").classList.remove("open");
+    }
+
+    function focusSearch() {
+        const input = document.getElementById("searchInput");
+        input.focus();
+        input.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+
+    function searchProducts() {
+        const value = document.getElementById("searchInput").value.toLowerCase().trim();
+        if (!value) return;
+
+        let found = null;
+        let brand = "";
+
+        for (const brandName in products) {
+            const product = products[brandName].find(p =>
+                p.name.toLowerCase().includes(value)
+            );
+            if (product) {
+                found = product;
+                brand = brandName;
+                break;
+            }
+        }
+
+        if (found) {
+            selectedBrand = brand;
+            selectedProduct = found;
+
+            document.querySelectorAll(".brand-btn").forEach(btn => btn.classList.remove("active"));
+            document.querySelectorAll(".brand-btn").forEach(btn => {
+                if (btn.textContent.trim().toLowerCase().includes(brand.toLowerCase())) {
+                    btn.classList.add("active");
+                }
+            });
+
+            const modelGroup = document.getElementById("modelGroup");
+            const modelSelect = document.getElementById("modelSelect");
+            modelGroup.style.display = "block";
+            modelSelect.innerHTML = `<option value="">-- Select the model --</option>`;
+
+            products[brand].forEach(item => {
+                const option = document.createElement("option");
+                option.value = item.id;
+                option.textContent = item.name;
+                modelSelect.appendChild(option);
+            });
+
+            modelSelect.value = found.id;
+            handleModelChange();
+        }
+    }
+
+    function toggleMenu() {
+        const links = document.querySelector(".nav-links");
+        if (links.style.display === "flex") {
+            links.style.display = "none";
+        } else {
+            links.style.display = "flex";
+            links.style.position = "absolute";
+            links.style.top = "80px";
+            links.style.left = "0";
+            links.style.right = "0";
+            links.style.padding = "15px";
+            links.style.flexDirection = "column";
+            links.style.background = "rgba(15,23,42,0.97)";
+            links.style.borderRadius = "15px";
+        }
+    }
+
+    function checkout() {
+        if (cart.length === 0) {
+            alert("Your cart is empty!");
+            return;
+        }
+        if (!currentUser) {
+            alert("Please create an account first to place an order!");
+            openAccountModal();
+            return;
+        }
+        alert(`Your order has been accepted, ${currentUser.name}! 🎉\nWe will contact you soon.`);
+    }
+</script>
+
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="shop-footer">
+    <div class="footer-container">
+        <!-- Logo -->
+        <div class="footer-brand">
+            <a href="#" class="footer-logo">
+                <span class="logo-icon">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                </span>
+                <span><span class="logo-my">my</span> shops</span>
+            </a>
+            <p class="brand-description">
+                Your trusted destination for smartphones,
+                laptops and modern technology.
+            </p>
+            <!-- App Download Buttons -->
+            <div class="app-buttons">
+                <a href="https://play.google.com/store" target="_blank" class="app-button" rel="noopener">
+                    <i class="fa-brands fa-google-play"></i>
+                    <span>
+                        <small>GET IT ON</small>
+                        <strong>Google Play</strong>
+                    </span>
+                </a>
+                <a href="https://www.apple.com/app-store/" target="_blank" class="app-button" rel="noopener">
+                    <i class="fa-brands fa-apple"></i>
+                    <span>
+                        <small>Download on the</small>
+                        <strong>App Store</strong>
+                    </span>
+                </a>
+            </div>
+        </div>
+        <!-- About Us -->
+        <div class="footer-about" id="about-us">
+            <h3>About Us</h3>
+            <p>
+                Welcome to My Shops! We offer a wide range of
+                smartphones and laptops from popular brands
+                including Samsung, Apple, Xiaomi, Tecno, Asus
+                and Acer.
+            </p>
+            <p>
+                <strong>Our Mission</strong><br>
+                To make online shopping simple, convenient
+                and accessible to everyone.
+            </p>
+            <p>
+                <strong>Our Goal</strong><br>
+                To provide quality products, useful information
+                and a smooth shopping experience.
+            </p>
+        </div>
+        <!-- Quick Links -->
+        <div class="footer-links">
+            <h3>Quick Links</h3>
+            <a href="#">Home</a>
+            <a href="#about-us">About Us</a>
+            <a href="#products">Our Products</a>
+            <a href="#campaigns">Campaigns</a>
+            <a href="#contact">Contact Us</a>
+        </div>
+    </div>
+    <!-- Bottom Section -->
+    <div class="footer-bottom">
+        <p>© 2026 My Shops. All rights reserved.</p>
+        <!-- Social Media -->
+        <div class="social-links">
+            <a href="https://www.facebook.com/" target="_blank" aria-label="Facebook" rel="noopener">
+                <i class="fa-brands fa-facebook-f"></i>
+            </a>
+            <a href="https://www.instagram.com/29.ceferov" target="_blank" aria-label="Instagram" rel="noopener">
+                <i class="fa-brands fa-instagram"></i>
+            </a>
+            <a href="https://www.youtube.com/" target="_blank" aria-label="YouTube" rel="noopener">
+                <i class="fa-brands fa-youtube"></i>
+            </a>
+            <a href="https://www.tiktok.com/@29.ceferov?_r=1&_t=ZS-9APQPwAKPdn" target="_blank" aria-label="TikTok" rel="noopener">
+                <i class="fa-brands fa-tiktok"></i>
+            </a>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>
